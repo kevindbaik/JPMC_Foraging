@@ -52,8 +52,7 @@ public class Controller {
                     addForage();
                     break;
                 case ADD_FORAGER:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
-                    view.enterToContinue();
+                    addForager();
                     break;
                 case ADD_ITEM:
                     addItem();
@@ -109,6 +108,18 @@ public class Controller {
             view.displayStatus(true, successMessage);
         }
     }
+
+    private void addForager() throws DataException {
+        Forager forager = view.makeForager();
+        Result<Forager> result = foragerService.addForager(forager);
+
+        if (result.isSuccess()) {
+            view.displayStatus(true, "Forager added successfully.");
+        } else {
+            view.displayStatus(false, String.join("\n", result.getErrorMessages()));
+        }
+    }
+
 
     private void addItem() throws DataException {
         Item item = view.makeItem();
