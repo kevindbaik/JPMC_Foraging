@@ -5,6 +5,7 @@ import learn.foraging.models.Forager;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class ForagerRepositoryDouble implements ForagerRepository {
@@ -19,7 +20,9 @@ public class ForagerRepositoryDouble implements ForagerRepository {
 
     @Override
     public Forager add(Forager forager) throws IOException {
-        return null;
+        forager.setId(UUID.randomUUID().toString());
+        foragers.add(forager);
+        return forager;
     }
 
     @Override

@@ -69,6 +69,4 @@ class ForageServiceTest {
         Result<Forage> result = service.add(forage);
         assertFalse(result.isSuccess());
     }
-
-
 }
