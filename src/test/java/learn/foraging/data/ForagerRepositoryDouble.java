@@ -2,6 +2,7 @@ package learn.foraging.data;
 
 import learn.foraging.models.Forager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -14,6 +15,11 @@ public class ForagerRepositoryDouble implements ForagerRepository {
 
     public ForagerRepositoryDouble() {
         foragers.add(FORAGER);
+    }
+
+    @Override
+    public Forager add(Forager forager) throws IOException {
+        return null;
     }
 
     @Override
