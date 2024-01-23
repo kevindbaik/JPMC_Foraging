@@ -4,15 +4,19 @@ import learn.foraging.data.DataException;
 import learn.foraging.data.ItemRepository;
 import learn.foraging.models.Category;
 import learn.foraging.models.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ItemService {
 
     private final ItemRepository repository;
 
+    @Autowired
     public ItemService(ItemRepository repository) {
         this.repository = repository;
     }

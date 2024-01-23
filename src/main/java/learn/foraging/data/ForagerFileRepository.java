@@ -1,6 +1,7 @@
 package learn.foraging.data;
 
 import learn.foraging.models.Forager;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Repository
 public class ForagerFileRepository implements ForagerRepository {
 
     private final String filePath;

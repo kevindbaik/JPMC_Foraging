@@ -9,11 +9,13 @@ import learn.foraging.models.Category;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+
 
 public class Controller {
 
@@ -23,6 +25,7 @@ public class Controller {
     private final View view;
     private final ConsoleIO consoleIO;
 
+    @Autowired
     public Controller(ForagerService foragerService, ForageService forageService, ItemService itemService, View view, ConsoleIO consoleIO) {
         this.foragerService = foragerService;
         this.forageService = forageService;

@@ -8,18 +8,22 @@ import learn.foraging.models.Category;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Service
 public class ForageService {
 
     private final ForageRepository forageRepository;
     private final ForagerRepository foragerRepository;
     private final ItemRepository itemRepository;
 
+    @Autowired
     public ForageService(ForageRepository forageRepository, ForagerRepository foragerRepository, ItemRepository itemRepository) {
         this.forageRepository = forageRepository;
         this.foragerRepository = foragerRepository;
