@@ -24,7 +24,7 @@ public class App {
         ForageService forageService = new ForageService(forageFileRepository, foragerFileRepository, itemFileRepository);
         ItemService itemService = new ItemService(itemFileRepository);
 
-        Controller controller = new Controller(foragerService, forageService, itemService, view);
+        Controller controller = new Controller(foragerService, forageService, itemService, view, io);
         controller.run();
     }
 }

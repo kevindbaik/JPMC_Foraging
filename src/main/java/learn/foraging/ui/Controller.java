@@ -10,8 +10,10 @@ import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class Controller {
 
@@ -19,12 +21,14 @@ public class Controller {
     private final ForageService forageService;
     private final ItemService itemService;
     private final View view;
+    private final ConsoleIO consoleIO;
 
-    public Controller(ForagerService foragerService, ForageService forageService, ItemService itemService, View view) {
+    public Controller(ForagerService foragerService, ForageService forageService, ItemService itemService, View view, ConsoleIO consoleIO) {
         this.foragerService = foragerService;
         this.forageService = forageService;
         this.itemService = itemService;
         this.view = view;
+        this.consoleIO = consoleIO;
     }
 
     public void run() {
@@ -58,11 +62,11 @@ public class Controller {
                     addItem();
                     break;
                 case REPORT_KG_PER_ITEM:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
+                    generateKgPerItemReport();
                     view.enterToContinue();
                     break;
                 case REPORT_CATEGORY_VALUE:
-                    view.displayStatus(false, "NOT IMPLEMENTED");
+                    generateCategoryValueReport();
                     view.enterToContinue();
                     break;
                 case GENERATE:
@@ -151,5 +155,17 @@ public class Controller {
         Category category = view.getItemCategory();
         List<Item> items = itemService.findByCategory(category);
         return view.chooseItem(items);
+    }
+
+    private void generateKgPerItemReport() {
+        LocalDate date = consoleIO.readLocalDate("Enter the date for the report MM/dd/yyyy:");
+        Map<Item, Double> report = forageService.getKgPerItemReport(date);
+        view.displayKgPerItemReport(date, report);
+    }
+
+    private void generateCategoryValueReport() {
+        LocalDate date = consoleIO.readLocalDate("Enter the date for the report MM/dd/yyyy:");
+        Map<Category, BigDecimal> report = forageService.getCategoryValueReport(date);
+        view.displayCategoryValueReport(date, report);
     }
 }

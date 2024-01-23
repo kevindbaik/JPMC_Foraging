@@ -60,4 +60,14 @@ public class Forage {
         return item.getDollarPerKilogram().multiply(kilos);
     }
 
+    @Override
+    public String toString() {
+        return "Forage{" +
+                "id='" + id + '\'' +
+                ", forager=" + forager +
+                ", item=" + item +
+                ", kilograms=" + kilograms +
+                '}';
+    }
+
 }

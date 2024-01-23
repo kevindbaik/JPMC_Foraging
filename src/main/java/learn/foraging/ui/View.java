@@ -6,8 +6,13 @@ import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 public class View {
@@ -199,6 +204,34 @@ public class View {
 
         for (Item item : items) {
             io.printf("%s: %s, %s, %.2f $/kg%n", item.getId(), item.getName(), item.getCategory(), item.getDollarPerKilogram());
+        }
+    }
+
+    public void displayKgPerItemReport(LocalDate date, Map<Item, Double> report) {
+        System.out.println("\nKilograms per Item Report for " + date);
+        if (report.isEmpty()) {
+            System.out.println("No data available for this date.");
+        } else {
+            for (Map.Entry<Item, Double> entry : report.entrySet()) {
+                String itemId = (entry.getKey() != null) ? String.valueOf(entry.getKey().getId()) : "Unknown Item ID";
+                double kg = (entry.getValue() != null) ? entry.getValue() : 0.0;
+
+                System.out.printf("Item ID %s: %.2f kg%n", itemId, kg);
+            }
+        }
+    }
+
+
+
+    public void displayCategoryValueReport(LocalDate date, Map<Category, BigDecimal> report) {
+        System.out.println("\nTotal Value by Category Report for " + date);
+        if (report.isEmpty()) {
+            System.out.println("No data available for this date.");
+        } else {
+            for (Map.Entry<Category, BigDecimal> entry : report.entrySet()) {
+                BigDecimal totalValue = entry.getValue().setScale(2, RoundingMode.HALF_UP);
+                System.out.printf("%s: $%s%n", entry.getKey(), totalValue);
+            }
         }
     }
 }

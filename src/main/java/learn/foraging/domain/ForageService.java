@@ -4,15 +4,14 @@ import learn.foraging.data.DataException;
 import learn.foraging.data.ForageRepository;
 import learn.foraging.data.ForagerRepository;
 import learn.foraging.data.ItemRepository;
+import learn.foraging.models.Category;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ForageService {
@@ -83,6 +82,32 @@ public class ForageService {
 
         return count;
     }
+
+    public Map<Item, Double> getKgPerItemReport(LocalDate date) {
+        return forageRepository.findByDate(date).stream()
+                .collect(Collectors.groupingBy(
+                        Forage::getItem,
+                        Collectors.summingDouble(Forage::getKilograms)));
+    }
+
+    public Map<Category, BigDecimal> getCategoryValueReport(LocalDate date) {
+        List<Forage> forages = forageRepository.findByDate(date);
+        Map<Category, BigDecimal> totalValueByCategory = new HashMap<>();
+
+        for (Forage forage : forages) {
+            int itemId = forage.getItem().getId();
+            Item item = itemRepository.findById(itemId);
+            if (item == null || item.getDollarPerKilogram() == null) {
+                continue;
+            }
+
+            BigDecimal value = item.getDollarPerKilogram().multiply(BigDecimal.valueOf(forage.getKilograms()));
+            totalValueByCategory.merge(item.getCategory(), value, BigDecimal::add);
+        }
+
+        return totalValueByCategory;
+    }
+
 
     private Result<Forage> validate(Forage forage) {
 
