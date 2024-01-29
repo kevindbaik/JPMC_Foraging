@@ -30,3 +30,7 @@ id,name,category,dollars/kilogram
 29,Testing,INEDIBLE,100
 30,Testinggggg,EDIBLE,100
 31,TestingInedbile,INEDIBLE,0
+32,ShouldNotHaveValue,POISONOUS,0
+33,ShouldNotHaveVAlueee,INEDIBLE,0
+34,SHouldHAveVAlue,EDIBLE,100
+35,TestingTrue,INEDIBLE,0

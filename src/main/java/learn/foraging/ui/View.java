@@ -128,11 +128,7 @@ public class View {
         Item item = new Item();
         item.setCategory(getItemCategory());
         item.setName(io.readRequiredString("Item Name: "));
-        if(item.getCategory() == Category.INEDIBLE || item.getCategory() == Category.POISONOUS) {
-            item.setDollarPerKilogram(BigDecimal.ZERO);
-        } else {
-            item.setDollarPerKilogram(io.readBigDecimal("$/Kg: ", BigDecimal.ZERO, new BigDecimal("7500.00")));
-        }
+        item.setDollarPerKilogram(io.readBigDecimal("$/Kg: ", BigDecimal.ZERO, new BigDecimal("7500.00")));
         return item;
     }
 

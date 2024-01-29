@@ -44,9 +44,16 @@ public class ItemService {
 
         if (item.getDollarPerKilogram() == null) {
             result.addErrorMessage("$/Kg is required.");
-        } else if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) < 0
-                || item.getDollarPerKilogram().compareTo(new BigDecimal("7500.00")) > 0) {
-            result.addErrorMessage("%/Kg must be between 0.00 and 7500.00.");
+        } else {
+            if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) < 0
+                    || item.getDollarPerKilogram().compareTo(new BigDecimal("7500.00")) > 0) {
+                result.addErrorMessage("%/Kg must be between 0.00 and 7500.00.");
+            }
+
+            if ((item.getCategory() == Category.INEDIBLE || item.getCategory() == Category.POISONOUS)
+                    && item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) > 0) {
+                result.addErrorMessage("Inedible or poisonous items cannot have a $/Kg value greater than 0.");
+            }
         }
 
         if (!result.isSuccess()) {
@@ -57,4 +64,5 @@ public class ItemService {
 
         return result;
     }
+
 }
