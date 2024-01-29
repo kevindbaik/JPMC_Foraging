@@ -128,7 +128,11 @@ public class View {
         Item item = new Item();
         item.setCategory(getItemCategory());
         item.setName(io.readRequiredString("Item Name: "));
-        item.setDollarPerKilogram(io.readBigDecimal("$/Kg: ", BigDecimal.ZERO, new BigDecimal("7500.00")));
+        if(item.getCategory() == Category.INEDIBLE || item.getCategory() == Category.POISONOUS) {
+            item.setDollarPerKilogram(BigDecimal.ZERO);
+        } else {
+            item.setDollarPerKilogram(io.readBigDecimal("$/Kg: ", BigDecimal.ZERO, new BigDecimal("7500.00")));
+        }
         return item;
     }
 
@@ -213,14 +217,13 @@ public class View {
             System.out.println("No data available for this date.");
         } else {
             for (Map.Entry<Item, Double> entry : report.entrySet()) {
-                String itemId = (entry.getKey() != null) ? String.valueOf(entry.getKey().getId()) : "Unknown Item ID";
+                String itemName = (entry.getKey() != null) ? entry.getKey().getName() : "Unknown Item Name";
                 double kg = (entry.getValue() != null) ? entry.getValue() : 0.0;
 
-                System.out.printf("Item ID %s: %.2f kg%n", itemId, kg);
+                System.out.printf("%s: %.2f kg%n", itemName, kg);
             }
         }
     }
-
 
 
     public void displayCategoryValueReport(LocalDate date, Map<Category, BigDecimal> report) {

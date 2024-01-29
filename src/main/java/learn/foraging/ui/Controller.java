@@ -1,6 +1,7 @@
 package learn.foraging.ui;
 
 import learn.foraging.data.DataException;
+import learn.foraging.data.ItemFileRepository;
 import learn.foraging.domain.ForageService;
 import learn.foraging.domain.ForagerService;
 import learn.foraging.domain.ItemService;
@@ -160,9 +161,20 @@ public class Controller {
         return view.chooseItem(items);
     }
 
+
     private void generateKgPerItemReport() {
         LocalDate date = consoleIO.readLocalDate("Enter the date for the report MM/dd/yyyy:");
         Map<Item, Double> report = forageService.getKgPerItemReport(date);
+        ItemFileRepository itemRepo = new ItemFileRepository("data/items.txt");
+        report.keySet().forEach(item -> {
+            if (item.getName() == null || item.getName().isEmpty()) {
+                Item enrichedItem = itemRepo.findById(item.getId());
+                if (enrichedItem != null) {
+                    item.setName(enrichedItem.getName());
+                }
+            }
+        });
+
         view.displayKgPerItemReport(date, report);
     }
 
