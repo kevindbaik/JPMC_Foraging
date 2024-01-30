@@ -24,7 +24,6 @@ public class Controller {
     private final ForageService forageService;
     private final ItemService itemService;
     private final View view;
-    private final ConsoleIO consoleIO;
 
     @Autowired
     public Controller(ForagerService foragerService, ForageService forageService, ItemService itemService, View view, ConsoleIO consoleIO) {
@@ -32,7 +31,6 @@ public class Controller {
         this.forageService = forageService;
         this.itemService = itemService;
         this.view = view;
-        this.consoleIO = consoleIO;
     }
 
     public void run() {
@@ -163,7 +161,7 @@ public class Controller {
 
 
     private void generateKgPerItemReport() {
-        LocalDate date = consoleIO.readLocalDate("Enter the date for the report MM/dd/yyyy:");
+        LocalDate date = view.getForageDate();
         Map<Item, Double> report = forageService.getKgPerItemReport(date);
         ItemFileRepository itemRepo = new ItemFileRepository("data/items.txt");
         report.keySet().forEach(item -> {
@@ -179,7 +177,7 @@ public class Controller {
     }
 
     private void generateCategoryValueReport() {
-        LocalDate date = consoleIO.readLocalDate("Enter the date for the report MM/dd/yyyy:");
+        LocalDate date = view.getForageDate();
         Map<Category, BigDecimal> report = forageService.getCategoryValueReport(date);
         view.displayCategoryValueReport(date, report);
     }
