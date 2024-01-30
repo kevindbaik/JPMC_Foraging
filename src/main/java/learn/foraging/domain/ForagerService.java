@@ -29,40 +29,50 @@ public class ForagerService {
     }
 
     public Result<Forager> addForager(Forager forager) {
-        Result<Forager> result = new Result<>();
+        Result<Forager> validation = validateForager(forager);
 
-        if (isInvalid(forager)) {
-            result.addErrorMessage("Forager validation failed");
-            return result;
+        if (!validation.isSuccess()) {
+            return validation;
         }
 
         if (isDuplicate(forager)) {
-            result.addErrorMessage("Duplicate forager found");
-            return result;
+            validation.addErrorMessage("Duplicate forager found");
+            return validation;
         }
 
         try {
             forager = repository.add(forager);
-            result.setPayload(forager);
+            validation.setPayload(forager);
         } catch (Exception e) {
-            result.addErrorMessage("Error adding forager: " + e.getMessage());
+            validation.addErrorMessage("Error adding forager: " + e.getMessage());
         }
-        return result;
+
+        return validation;
     }
 
-    private boolean isInvalid(Forager forager) {
+    private Result<Forager> validateForager(Forager forager) {
+        Result<Forager> result = new Result<>();
+
         if (forager == null) {
-            return true;
+            result.addErrorMessage("Forager must not be null.");
+            return result;
         }
         if (forager.getFirstName() == null || forager.getFirstName().trim().isEmpty()) {
-            return true;
+            result.addErrorMessage("First name is required.");
         }
         if (forager.getLastName() == null || forager.getLastName().trim().isEmpty()) {
-            return true;
+            result.addErrorMessage("Last name is required.");
         }
-        return forager.getState() == null || forager.getState().trim().isEmpty();
-    }
+        if (forager.getState() == null || forager.getState().trim().isEmpty()) {
+            result.addErrorMessage("State is required.");
+        }
 
+        if (result.isSuccess()) {
+            result.setPayload(forager);
+        }
+
+        return result;
+    }
     private boolean isDuplicate(Forager forager) {
         List<Forager> existingForagers = repository.findAll();
         for (Forager existing : existingForagers) {
