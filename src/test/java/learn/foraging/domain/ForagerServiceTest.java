@@ -43,7 +43,7 @@ class ForagerServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertTrue(result.getErrorMessages().contains("Forager validation failed"));
+        assertTrue(result.getErrorMessages().contains("First name is required."));
     }
 
     @Test
@@ -57,7 +57,7 @@ class ForagerServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertTrue(result.getErrorMessages().contains("Forager validation failed"));
+        assertTrue(result.getErrorMessages().contains("Last name is required."));
     }
 
     @Test
@@ -71,7 +71,7 @@ class ForagerServiceTest {
 
         assertFalse(result.isSuccess());
         assertNull(result.getPayload());
-        assertTrue(result.getErrorMessages().contains("Forager validation failed"));
+        assertTrue(result.getErrorMessages().contains("State is required."));
     }
 
     @Test
