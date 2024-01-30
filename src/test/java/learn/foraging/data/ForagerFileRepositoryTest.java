@@ -22,7 +22,7 @@ class ForagerFileRepositoryTest {
     void setUp() throws IOException {
         Path testFilePath = Paths.get("./data/forager_data_test/2024-01-29.csv");
         Files.deleteIfExists(testFilePath);
-        Files.write(testFilePath, List.of("id,firstName,lastName,state", "1,John,Doe,CA", "2,Jane,Doe,NV"), StandardCharsets.UTF_8);
+        Files.write(testFilePath, List.of("id,firstName,lastName,state", "71e564884-59cs-45dd-89e2-f7d825chgrb6a,John,Doe,CA", "71e67754-20ca-45dd-89e2-f7d825cbfrw6a,Jane,Doe,NV"), StandardCharsets.UTF_8);
     }
     @Test
     void shouldFindAll() {
