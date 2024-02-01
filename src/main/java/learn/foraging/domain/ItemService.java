@@ -4,15 +4,19 @@ import learn.foraging.data.DataException;
 import learn.foraging.data.ItemRepository;
 import learn.foraging.models.Category;
 import learn.foraging.models.Item;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class ItemService {
 
     private final ItemRepository repository;
 
+    @Autowired
     public ItemService(ItemRepository repository) {
         this.repository = repository;
     }
@@ -40,9 +44,16 @@ public class ItemService {
 
         if (item.getDollarPerKilogram() == null) {
             result.addErrorMessage("$/Kg is required.");
-        } else if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) < 0
-                || item.getDollarPerKilogram().compareTo(new BigDecimal("7500.00")) > 0) {
-            result.addErrorMessage("%/Kg must be between 0.00 and 7500.00.");
+        } else {
+            if (item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) < 0
+                    || item.getDollarPerKilogram().compareTo(new BigDecimal("7500.00")) > 0) {
+                result.addErrorMessage("%/Kg must be between 0.00 and 7500.00.");
+            }
+
+            if ((item.getCategory() == Category.INEDIBLE || item.getCategory() == Category.POISONOUS)
+                    && item.getDollarPerKilogram().compareTo(BigDecimal.ZERO) > 0) {
+                result.addErrorMessage("Inedible or poisonous items cannot have a $/Kg value greater than 0.");
+            }
         }
 
         if (!result.isSuccess()) {
@@ -53,4 +64,5 @@ public class ItemService {
 
         return result;
     }
+
 }

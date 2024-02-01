@@ -8,19 +8,27 @@ import learn.foraging.models.Category;
 import learn.foraging.models.Forage;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ForageServiceTest {
+    private ForageService service;
+    private ForageRepositoryDouble forageRepository;
+    private ItemRepositoryDouble itemRepository;
 
-    ForageService service = new ForageService(
-            new ForageRepositoryDouble(),
-            new ForagerRepositoryDouble(),
-            new ItemRepositoryDouble());
+    @BeforeEach
+    void setUp() {
+        forageRepository = new ForageRepositoryDouble();
+        ForagerRepositoryDouble foragerRepository = new ForagerRepositoryDouble();
+        ItemRepositoryDouble itemRepository = new ItemRepositoryDouble();
+        service = new ForageService(forageRepository, foragerRepository, itemRepository);
+    }
 
     @Test
     void shouldAdd() throws DataException {
@@ -70,5 +78,29 @@ class ForageServiceTest {
         assertFalse(result.isSuccess());
     }
 
+    @Test
+    void getKgPerItemReport_ShouldReturnCorrectTotals() {
+        LocalDate testDate = forageRepository.date;
+        Item item = itemRepository.ITEM;
 
+        Map<Item, Double> report = service.getKgPerItemReport(testDate);
+        assertNotNull(report);
+        assertFalse(report.isEmpty());
+
+        double expectedKgForItem1 = 1.25;
+        assertEquals(expectedKgForItem1, report.get(item));
+    }
+
+    @Test
+    void getCategoryValueReport_ShouldReturnCorrectTotals() {
+        LocalDate testDate = forageRepository.getDate();
+
+        Map<Category, BigDecimal> report = service.getCategoryValueReport(testDate);
+
+        assertNotNull(report);
+        assertFalse(report.isEmpty());
+
+        BigDecimal expectedValueForEdible = new BigDecimal("12.4875");
+        assertEquals(expectedValueForEdible, report.get(Category.EDIBLE));
+    }
 }

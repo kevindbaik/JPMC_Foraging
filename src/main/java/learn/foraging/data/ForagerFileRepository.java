@@ -1,15 +1,15 @@
 package learn.foraging.data;
 
 import learn.foraging.models.Forager;
+import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOError;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Repository
 public class ForagerFileRepository implements ForagerRepository {
 
     private final String filePath;
@@ -39,6 +39,19 @@ public class ForagerFileRepository implements ForagerRepository {
     }
 
     @Override
+    public Forager add(Forager forager) throws IOException {
+        forager.setId(UUID.randomUUID().toString());
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+            writer.write(serialize(forager));
+            writer.newLine();
+        } catch (IOException e) {
+            throw e;
+        }
+        return forager;
+    }
+
+    @Override
     public Forager findById(String id) {
         return findAll().stream()
                 .filter(i -> i.getId().equalsIgnoreCase(id))
@@ -60,5 +73,12 @@ public class ForagerFileRepository implements ForagerRepository {
         result.setLastName(fields[2]);
         result.setState(fields[3]);
         return result;
+    }
+
+    private String serialize(Forager forager) {
+        return forager.getId() + "," +
+                forager.getFirstName() + "," +
+                forager.getLastName() + "," +
+                forager.getState();
     }
 }

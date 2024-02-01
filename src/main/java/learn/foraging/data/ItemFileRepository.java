@@ -3,12 +3,14 @@ package learn.foraging.data;
 import learn.foraging.models.Category;
 import learn.foraging.models.Forager;
 import learn.foraging.models.Item;
+import org.springframework.stereotype.Repository;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Repository
 public class ItemFileRepository implements ItemRepository {
 
     private static final String HEADER = "id,name,category,dollars/kilogram";

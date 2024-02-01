@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 
 public class ForageRepositoryDouble implements ForageRepository {
 
-    final LocalDate date = LocalDate.of(2020, 6, 26);
+    public final LocalDate date = LocalDate.of(2020, 6, 26);
 
     private final ArrayList<Forage> forages = new ArrayList<>();
 
@@ -40,5 +40,9 @@ public class ForageRepositoryDouble implements ForageRepository {
     @Override
     public boolean update(Forage forage) throws DataException {
         return false;
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 }
